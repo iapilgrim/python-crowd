@@ -1,0 +1,11 @@
+1) To create user
+curl -k -u pxs:pxs -H "Content-Type:application/json" -d -H "accept: application/json" -X POST '{"name":"username","first-name":"some-name","last-name":"some-name","display-name":"Display name","email":"gg@gmail.com","active":"true","password":{"value":"test123"}}' -v http://localhost:8095/crowd/rest/usermanagement/latest/user
+
+
+2) to update password
+<?xml version="1.0" encoding="UTF-8"?>
+<password>
+  <value>new-password</value>
+</password>
+
+curl --data-binary @password.xml http://localhost:8095/crowd/rest/usermanagement/latest/user/password?username=test -X PUT -u pxs:pxs --header 'Content-Type: application/xml'

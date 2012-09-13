@@ -64,7 +64,10 @@ class CrowdServer(object):
         req = requests.post(url, data=json.dumps(post_data), auth=self.auth_info,
             headers=self.request_headers)
         return req
-
+    def _put(self, url, post_data):
+        req = requests.put(url, data=json.dumps(post_data), auth=self.auth_info,
+            headers=self.request_headers)
+        return req
     def _delete(self, url):
         req = requests.delete(url, auth=self.auth_info, headers=self.request_headers)
         return req
@@ -248,3 +251,16 @@ class CrowdServer(object):
             return None
 
         return [g['name'] for g in json.loads(response.text)['groups']]
+    def create_user(self,username,password):
+        url = self.rest_url + "/user"
+        response = self._post(url, {"name": username,"password": {'value':password}})
+        print response
+    return response.json
+
+    def update_user(self,username,password,user_data={}):
+        url = self.rest_url + "/user?%s" % urlencode({"username": username})
+        print url
+        response = self._put(url, {"password": {'value':password}}.update(user_data))
+        return response.json
+        
+        
