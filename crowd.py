@@ -41,7 +41,7 @@ class CrowdServer(object):
         self.crowd_url = crowd_url
         self.app_name = app_name
         self.app_pass = app_pass
-        self.rest_url = crowd_url.rstrip("/") + "/rest/usermanagement/1"
+        self.rest_url = crowd_url.rstrip("/") + "/rest/usermanagement/latest"
 
         self.auth_info = requests.auth.HTTPBasicAuth(app_name, app_pass)
         self.request_headers = {
