@@ -251,16 +251,39 @@ class CrowdServer(object):
             return None
 
         return [g['name'] for g in json.loads(response.text)['groups']]
-    def create_user(self,username,password):
-        url = self.rest_url + "/user"
-        response = self._post(url, {"name": username,"password": {'value':password}})
+    def get_cookie_info(self):
+        url = self.rest_url + "/config/cookie/"
+        response = self._get(url)
         print response
-    return response.json
-
-    def update_user(self,username,password,user_data={}):
-        url = self.rest_url + "/user?%s" % urlencode({"username": username})
-        print url
-        response = self._put(url, {"password": {'value':password}}.update(user_data))
-        return response.json
+        if not response.ok:
+            return None
+        # Otherwise return the user object
+        ob = json.loads(response.text)
+        return ob
+    def is_valid_principal_token(self,token):
+        #TODO implement later
+        return True
+    def find_user_by_token(self,token):
         
+        url = self.rest_url + "/session/%s" %token
+        response = self._get(url)
+        if not response.ok:
+            return None
+
+        # Otherwise return the user object
+        ob = json.loads(response.text)
+        return ob
+    def get_user(self, username):
+        url = self.rest_url + "/user?%s" % urlencode(
+            {"username": username,"expand":True})
+        response = self._get(url)
+
+        if not response.ok:
+            return None
+
+        # Otherwise return the user object
+        ob = json.loads(response.text)
+        return ob
+
+
         
